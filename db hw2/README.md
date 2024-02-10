@@ -22,7 +22,7 @@ create table customer_hw2 (
 	postcode varchar(30),
 	state varchar(30),
 	country varchar(30),
-	property_valuation(int4)
+	property_valuation int4
 );
 
 create table transaction_hw2 (
