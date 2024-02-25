@@ -104,11 +104,11 @@ where ranking = 1;
 
 -- 7. Вывести имена, фамилии и профессии клиентов, между транзакциями которых был максимальный интервал (интервал вычисляется в днях).
 with intervals_cte as (
-	select distinct customer_id, 
-		(max(transaction_date::date) over(partition by customer_id) - min(transaction_date::date) over(partition by customer_id)) as interval_days
+	select customer_id, (
+		lead(transaction_date::date) over(partition by customer_id order by transaction_date::date) - transaction_date::date
+		) as interval_days
 	from view5
-	order by interval_days desc
-) 
+)
 select distinct customer_id, first_name, last_name, job_title from view5
 where customer_id in (
 	select customer_id from intervals_cte 
